@@ -330,3 +330,15 @@ func Test_isOriginDetectionEnabled(t *testing.T) {
 		})
 	}
 }
+
+func TestMessageTooLongError(t *testing.T) {
+	client, err := New("localhost:8765", WithMaxBytesPerPayload(10), WithoutClientSideAggregation())
+	require.NoError(t, err)
+
+	err = client.Gauge("fake_name_", 21, nil, 1)
+	require.Error(t, err)
+	assert.Equal(t, "message too long. See 'WithMaxBytesPerPayload' documentation.", err.Error())
+
+	_, ok := err.(*MessageTooLongError)
+	assert.True(t, ok)
+}
