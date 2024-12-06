@@ -368,7 +368,7 @@ func parseAgentURL(agentURL string) string {
 	return ""
 }
 
-func createWriter(addr string, writeTimeout time.Duration, connectTimeout time.Duration) (Transport, string, error) {
+func CreateWriter(addr string, writeTimeout time.Duration, connectTimeout time.Duration) (Transport, string, error) {
 	addr = resolveAddr(addr)
 	if addr == "" {
 		return nil, "", errors.New("No address passed and autodetection from environment failed")
@@ -401,7 +401,7 @@ func New(addr string, options ...Option) (*Client, error) {
 		return nil, err
 	}
 
-	w, writerType, err := createWriter(addr, o.writeTimeout, o.connectTimeout)
+	w, writerType, err := CreateWriter(addr, o.writeTimeout, o.connectTimeout)
 	if err != nil {
 		return nil, err
 	}
